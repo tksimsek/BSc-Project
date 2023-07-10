@@ -1,0 +1,26 @@
+{
+    "TennisBall": {
+        "hueLow": 21,
+        "hueHigh": 50,
+        "satLow": 24,
+        "satHigh": 255,
+        "valLow": 0,
+        "valHigh": 255
+    },
+    "PingPongBall": {
+        "hueLow": 15,
+        "hueHigh": 60,
+        "satLow": 0,
+        "satHigh": 66,
+        "valLow": 120,
+        "valHigh": 255
+    },
+    "Scooper": {
+        "hueLow": 0,
+        "hueHigh": 35,
+        "satLow": 80,
+        "satHigh": 255,
+        "valLow": 110,
+        "valHigh": 255
+    }
+}
