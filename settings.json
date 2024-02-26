@@ -1,10 +1,18 @@
 {
     "TennisBall": {
-        "hueLow": 21,
-        "hueHigh": 50,
-        "satLow": 24,
+        "hueLow": 37,
+        "hueHigh": 55,
+        "satLow": 62,
         "satHigh": 255,
         "valLow": 0,
+        "valHigh": 255
+    },
+    "Scooper": {
+        "hueLow": 0,
+        "hueHigh": 33,
+        "satLow": 80,
+        "satHigh": 255,
+        "valLow": 110,
         "valHigh": 255
     },
     "PingPongBall": {
@@ -13,14 +21,6 @@
         "satLow": 0,
         "satHigh": 66,
         "valLow": 120,
-        "valHigh": 255
-    },
-    "Scooper": {
-        "hueLow": 0,
-        "hueHigh": 35,
-        "satLow": 80,
-        "satHigh": 255,
-        "valLow": 110,
         "valHigh": 255
     }
 }
