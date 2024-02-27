@@ -35,7 +35,7 @@ while True:
     frameHSV = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
     mask_scooper = cv.inRange(frameHSV, lower_scooper, upper_scooper)
-    mask_tennis = cv.inRange(frameHSV, lower_scooper, upper_scooper)
+    mask_tennis = cv.inRange(frameHSV, lower_tennis, upper_tennis)
 
     window_scooper = cv.bitwise_and(frame, frame, mask = mask_scooper)
     cv.imshow('Scooper Mask', window_scooper)
@@ -43,7 +43,7 @@ while True:
 
     window_tennis = cv.bitwise_and(frame, frame, mask = mask_tennis)
     cv.imshow('Tennis Mask', window_tennis)
-    cv.moveWindow('Tennis Mask', 100, 520)
+    cv.moveWindow('Tennis Mask', 750, 0)
     
     cv.imshow('Original', frame)
     cv.moveWindow('Original', 100, 0)

@@ -19,26 +19,31 @@ with open("settings.json", "r") as read_file:
 
 
 image = cv.imread("Images/arm + ball.jpg")
-image_s = cv.resize(image, (600, 800))
 
-image_HSV = cv.cvtColor(image_s, cv.COLOR_BGR2HSV)
 
-mask_scooper = cv.inRange(image_HSV, lower_scooper, upper_scooper)
-mask_tennis = cv.inRange(image_HSV, lower_tennis, upper_tennis)
+def find_mids(image, bound_1, bound_2):
+    # image_s = cv.resize(image, (600, 800))
 
-indices_scooper = mask_scooper.nonzero()
-indices_tennis = mask_tennis.nonzero()
+    image_HSV = cv.cvtColor(image, cv.COLOR_BGR2HSV)
 
-mid_point_scooper = (int(indices_scooper[0].mean()) , int(indices_scooper[1].mean()))
-mid_point_tennis = (int(indices_tennis[0].mean()) , int(indices_tennis[1].mean()))
+    mask_scooper = cv.inRange(image_HSV, bound_1[0], bound_1[1])
+    mask_tennis = cv.inRange(image_HSV, bound_2[0], bound_2[1])
 
-x_diff, y_diff = ((mid_point_scooper[0] - mid_point_tennis[0]), (mid_point_scooper[1] - mid_point_tennis[1]))
+    indices_scooper = mask_scooper.nonzero()
+    indices_tennis = mask_tennis.nonzero()
 
-print(mid_point_scooper)
-print(mid_point_tennis)
+    mid_point_scooper = (int(indices_scooper[0].mean()) , int(indices_scooper[1].mean()))
+    mid_point_tennis = (int(indices_tennis[0].mean()) , int(indices_tennis[1].mean()))
 
-print("X diff:", x_diff)
-print("Y diff:", y_diff)
+    # x_diff, y_diff = ((mid_point_scooper[0] - mid_point_tennis[0]), (mid_point_scooper[1] - mid_point_tennis[1]))
+
+    # print(mid_point_scooper)
+    # print(mid_point_tennis)
+
+    # print("X diff:", x_diff)
+    # print("Y diff:", y_diff)
+
+    return mid_point_scooper, mid_point_tennis
 
 
 

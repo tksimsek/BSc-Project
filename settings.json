@@ -1,10 +1,10 @@
 {
     "TennisBall": {
-        "hueLow": 37,
+        "hueLow": 32,
         "hueHigh": 55,
-        "satLow": 62,
+        "satLow": 36,
         "satHigh": 255,
-        "valLow": 0,
+        "valLow": 150,
         "valHigh": 255
     },
     "Scooper": {
