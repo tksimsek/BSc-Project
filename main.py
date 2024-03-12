@@ -5,8 +5,6 @@ import cv2 as cv
 
 base_postition = 0
 
-# https://docs.opencv.org/4.7.0/d4/d73/tutorial_py_contours_begin.html
-
 
 def setup():
     setup_serial()

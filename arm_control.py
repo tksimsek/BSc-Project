@@ -3,14 +3,19 @@ import os
 import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../..'))
 
-import time
+from utils import find_port
 from uarm.wrapper import SwiftAPI
 
 
 class controller():
 
     def __init__(self):
-        self.swift = SwiftAPI(port="COM5", filters={'hwid': 'USB VID:PID=2341:0042'})
+
+        com_port = find_port("arm")
+        if com_port == "Device not found":
+            return -1
+        
+        self.swift = SwiftAPI(port=com_port, filters={'hwid': 'USB VID:PID=2341:0042'})
 
         self.swift.waiting_ready(timeout=3)
 
@@ -32,14 +37,42 @@ class controller():
         self.swift.set_position(x=30, y=-200, wait=True)
 
 
+    def move(self, x_target, y_target, z_target=50):
+        self.swift.set_position(x=int(x_target), y=int(y_target), z=int(z_target), wait=True)
+
+
     def set_servo(self, degree):
         self.swift.set_wrist(int(degree))
     
 
     def exit(self):
-        #self.swift.reset(wait=True, speed=30000)
-        self.swift.set_position(x=140, y=0, z=50, wait=True)
-        # self.swift.flush_cmd(wait_stop=True)
+        self.swift.reset(wait=True, speed=30000)
+        self.swift.set_position(x=140, y=0, z=50, wait=True) # Try removing to see if default reset coordinates are sufficient
 
         print("Bye")
         self.swift.disconnect()
+
+
+# arm = controller()
+
+# arm.move(100,200)
+# time.sleep(2)
+
+# arm.move(100,200,z_target=0)
+# time.sleep(2)
+
+# arm.move(250,200,0)
+# time.sleep(2)
+
+# arm.exit()
+
+
+
+# arm.set_servo(35)
+# arm.move(100,160)
+# arm.set_servo(25)
+# arm.move(100,160,0)
+# arm.set_servo(20)
+# arm.move(200,160,0)
+# time.sleep(2)
+# arm.exit()
