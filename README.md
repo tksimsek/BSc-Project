@@ -1,3 +1,5 @@
+<h1>Project Sisyphus</h1>
+
 This repository includes the code for my Bachelors Project.
 The goal of the project is to build a Robotics/Art installation, inspired from The Myth of Sisyphus.
 
