@@ -22,5 +22,13 @@
         "satHigh": 66,
         "valLow": 120,
         "valHigh": 255
+    },
+    "RedBall": {
+        "hueLow": 95,
+        "hueHigh": 180,
+        "satLow": 120,
+        "satHigh": 255,
+        "valLow": 170,
+        "valHigh": 255
     }
 }
