@@ -15,7 +15,8 @@ class controller():
         if com_port == "Device not found":
             return -1
         
-        self.swift = SwiftAPI(port=com_port, filters={'hwid': 'USB VID:PID=2341:0042'})
+        print("Arm port: ", com_port)
+        self.swift = SwiftAPI(port=com_port) #, filters={'hwid': 'USB VID:PID=2341:0042'}
 
         self.swift.waiting_ready(timeout=3)
 
@@ -43,6 +44,11 @@ class controller():
 
     def set_servo(self, degree):
         self.swift.set_wrist(int(degree))
+    
+
+    def reset(self):
+        self.swift.reset(wait=True, speed=30000)
+        self.swift.set_position(x=140, y=0, z=50, wait=True)
     
 
     def exit(self):

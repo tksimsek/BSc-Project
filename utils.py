@@ -8,14 +8,27 @@ def find_port(device=""):
     """Returns the current COM Port number for given device=("Arm" or "Carrier")"""
 
     ports = serial.tools.list_ports.comports()
+    # for port, desc, hwid in sorted(ports):
+    #     print("Available port: {}:{}:".format(port, desc, hwid))
+
+    uarm_port = ""
+    carrier_port = ""
 
     for port, desc, hwid in sorted(ports):
-        if hwid == UARM_HWID:
+        if "Arduino Mega 2560" in desc:
             uarm_port = str(port)
-        elif hwid == CARRIER_HWID:
+        elif "Arduino NANO Every" in desc:
             carrier_port = str(port)
         else:
             continue
+
+    # for port, desc, hwid in sorted(ports):
+    #     if hwid == UARM_HWID:
+    #         uarm_port = str(port)
+    #     elif hwid == CARRIER_HWID:
+    #         carrier_port = str(port)
+    #     else:
+    #         continue
     
     if device.lower() == "arm":
         return uarm_port

@@ -17,7 +17,7 @@ while True:
         print("Can't receive frame, exiting ...")
         break
 
-    crop_img = frame[:, 150:-20]
+    crop_img = frame[:, 180:]
     crop_img = cv.resize(crop_img, (600, 800))
     cv.imshow("Cropped", crop_img)
     cv.moveWindow('Cropped', 100, 0)
