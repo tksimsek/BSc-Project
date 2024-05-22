@@ -27,7 +27,7 @@ class controller():
             self.swift.set_speed_factor(0.0005)
 
         self.swift.set_mode(0)
-        self.swift.reset(wait=True, speed=30000)
+        self.swift.reset(wait=True, speed=20000)
 
 
     def move_left(self):
@@ -47,38 +47,13 @@ class controller():
     
 
     def reset(self):
-        self.swift.reset(wait=True, speed=30000)
+        self.swift.reset(wait=True, speed=20000)
         self.swift.set_position(x=140, y=0, z=50, wait=True)
     
 
     def exit(self):
-        self.swift.reset(wait=True, speed=30000)
+        self.swift.reset(wait=True, speed=20000)
         self.swift.set_position(x=140, y=0, z=50, wait=True) # Try removing to see if default reset coordinates are sufficient
 
         print("Bye")
         self.swift.disconnect()
-
-
-# arm = controller()
-
-# arm.move(100,200)
-# time.sleep(2)
-
-# arm.move(100,200,z_target=0)
-# time.sleep(2)
-
-# arm.move(250,200,0)
-# time.sleep(2)
-
-# arm.exit()
-
-
-
-# arm.set_servo(35)
-# arm.move(100,160)
-# arm.set_servo(25)
-# arm.move(100,160,0)
-# arm.set_servo(20)
-# arm.move(200,160,0)
-# time.sleep(2)
-# arm.exit()
