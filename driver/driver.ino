@@ -16,7 +16,11 @@ const int maxButton = 11;
 AccelStepper stepper = AccelStepper(motorInterfaceType, stepPin, dirPin);
 long initialHoming = 1;  // Used to Home Stepper at startup
 long currPosit = 1;
+long maxPosit = 60000;
 
+// Operating speed and acceleration
+int maxSpeed = 1400; // 1200 and 120 accel works
+int maxAccel = 120;
 
 // Servo
 Servo myservo;
@@ -40,7 +44,7 @@ void calibrate() {
 
     while (digitalRead(homeButton)) {  // Move until the switch is activated   
         stepper.moveTo(initialHoming);  // Set the position to move to
-        initialHoming += 2;  // Decrease by 1 for next move if needed
+        initialHoming += 4;  // Decrease by 1 for next move if needed
         stepper.run();  // Start moving the stepper
         delay(5);
     }
@@ -124,17 +128,24 @@ void loop() {
             move_servo(value);
             Serial.print("moved_s\n");
         }
-        else if (device == 2 && value >= 0 && value <= 30000) { //  && value < maxPosit
-            // Move stepper motor
+        else if (device == 2 && value >= 0 && value <= maxPosit) {
+          if (value == 0) {
             stepper.setMaxSpeed(800);
             stepper.setAcceleration(150);
+
+            stepper.moveTo(500);
+            stepper.runToPosition();
+            calibrate();          
+          }
+          else {
+            // Move stepper motor
+            stepper.setMaxSpeed(maxSpeed);
+            stepper.setAcceleration(maxAccel);
           
             stepper.moveTo(-value);
-            stepper.runToPosition();
+            stepper.runToPosition();            
+          }
 
-            // while (stepper.currentPosition() != value) {
-            //   stepper.run();
-            // }
             Serial.print("moved_c\n");       
         }
     }

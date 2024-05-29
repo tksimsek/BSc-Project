@@ -1,7 +1,12 @@
+# Most basic script to experiment with arm coordinates
+
 from arm_control import controller
 
-arm = controller()
-
-for i in range(50):
-    x, y, z = input("target: ").split(",")
-    arm.move(x, y, z)
+try:
+    arm = controller()
+    while True:
+        x, y, z = input("target: ").split(",")
+        arm.move(x, y, z)
+except KeyboardInterrupt:
+    arm.exit()
+    pass

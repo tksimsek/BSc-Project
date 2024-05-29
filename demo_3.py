@@ -10,13 +10,13 @@ from arm_control import controller
 
 
 # Variables for device locations
-servo_position = 0 
+servo_position = 0      # Servo for pushback mechanism 
 carrier_position = 0
 
 arm_x = 140
 arm_y = 0
 arm_z = 50
-
+arm_servo = int(10)
 
 # Arm controller instance
 arm = controller()
@@ -50,7 +50,7 @@ with open("settings.json", "r") as read_file:
     j_data = json.load(read_file)
 
     bounds_scooper = bound_arrays(j_data["Scooper"])
-    bounds_ball = bound_arrays(j_data["RedBall"])
+    bounds_ball = bound_arrays(j_data["TennisBall"])
 
 
 # Wait for carrier to home
@@ -69,44 +69,9 @@ for i in range(1):
     servo_position = 0
     driver.write(bytes(f"1,{servo_position}\n", 'utf-8'))
 
-    # Incremental approach in 4 steps
-    # for i in range(4):
-    #     ret, frame = cap.read()
-    #     ret, frame = cap.read()
-    #     if not ret:
-    #         print("Can't receive frame, dropping ...")
-    #         continue
-
-    #     frame = frame[:, 150:-20] # Cropping from the sides. Adjust according to installation
-
-    #     mid_scooper, mid_ball = find_mids(frame, bounds_scooper, bounds_ball)
-
-    #     y_diff, x_diff = (mid_scooper[0] - mid_ball[0]), (mid_scooper[1] - mid_ball[1]) # Flipped x y according to image to match the arm
-
-    #     print("X Diff: ", x_diff)
-    #     print("Y Diff: ", y_diff)
-
-    #     # Arm target values
-    #     x_target = arm_x + (x_diff / 4) - (60 / (i + 1))
-    #     y_target = arm_y + (y_diff / 4)
-    #     z_target = 60
-    
-    #     if(arm_y >= 160):
-    #         z_target = -30
-    #     else:
-    #         print("Scooper will collide with the rails, ignoring instruction")
-    #         continue
-
-    #     arm.move(x_target, y_target, z_target)
-
-    #     arm_x = x_target
-    #     arm_y = y_target
-    #     arm_z = z_target
-
-    #     # Can come up w an equation to determine better servo angles according to x,y targets
-    #     arm.set_servo(25)
-    
-
+    """The camera or openCV probably buffers a frame for retrieval, 
+    thats why when we actually request a frame, we receive an old one.
+    To solve this we drop a frame to get the most current one."""
     ret, frame = cap.read()
     ret, frame = cap.read()
     if not ret:
@@ -123,12 +88,18 @@ for i in range(1):
     print("Y Diff: ", y_diff)
 
     # Arm target values
-    x_target = arm_x + y_diff
+    # if (arm_x + y_diff >= 50):
+    #     x_target = arm_x + y_diff - 50
+    # else:
+    #     x_target = arm_x + y_diff
+
+    x_target = 10
+    
     y_target = arm_y + x_diff + 30
     z_target = 40
 
     arm.move(x_target, y_target, z_target)
-    arm.set_servo(25)
+    arm.set_servo(arm_servo)
 
     arm_x = x_target
     arm_y = y_target
@@ -137,13 +108,14 @@ for i in range(1):
     if(arm_y >= 160):
         z_target = -50
         arm.move(x_target, y_target, z_target)
+        arm_z = z_target
     else:
         print("Scooper will collide with the rails, ignoring instruction")
         continue
     
 
     # Pushing the ball on level surface
-    carrier_position = 12000
+    carrier_position = 33000
     driver.write(bytes(f"2,{carrier_position}\n", 'utf-8'))
 
     mssg = driver.readline().decode("utf-8")
@@ -159,13 +131,55 @@ for i in range(1):
         continue
 
     # Arm pushing up the slope
-    for i in range(100):
+    for i in range(60):
         arm_x += 3
         arm_z += 2
         arm.move(arm_x, arm_y, arm_z)
+
+        if(i % 6 == 0):
+            arm_servo += 2
+            arm.set_servo(arm_servo)
+    
+    # Arm is at max X range but there is still a bit more to go
+    for i in range(16):
+        
+        arm_z += 5
+        arm.move(arm_x, arm_y, arm_z)
+
+        if(i % 5 == 0):
+            arm_servo += 2
+            arm.set_servo(arm_servo)
+        
+        # TODO Take the following inside a function if it works
+        carrier_position += 1200
+        driver.write(bytes(f"2,{carrier_position}\n", 'utf-8'))
+
+        mssg = driver.readline().decode("utf-8")
+        while mssg != "moved_c\n":
+            print("correct mssg not received")
+            print(mssg)
+            mssg = driver.readline().decode("utf-8")
+            
+        if(mssg == "moved_c\n"):
+            print("moved carrier to: ", carrier_position)
+        else:
+            print("couldn't move to: ", carrier_position)
+            continue
+
     
 
-    # Arm going back
+    # Pulling away the Arm
+    arm_x = 150
+    arm.move(arm_x, arm_y, arm_z)
+    arm_y = 0
+    arm.move(arm_x, arm_y, arm_z)
+    arm_z = 80
+    arm.move(arm_x, arm_y, arm_z)
+    arm_servo = 90
+    arm.set_servo(arm_servo)
+    
+
+    # Carrier going back
     carrier_position = 0
     driver.write(bytes(f"2,{carrier_position}\n", 'utf-8'))
 
@@ -175,9 +189,8 @@ for i in range(1):
         print(mssg)
         mssg = driver.readline().decode("utf-8")
 
-    if(mssg == "moved_c\n"): {
+    if(mssg == "moved_c\n"):
         print("moved carrier to: ", carrier_position)
-    }
     else:
         print("couldn't move to: ", carrier_position)
         continue
@@ -186,12 +199,16 @@ for i in range(1):
 
     servo_position = 50
     driver.write(bytes(f"1,{servo_position}\n", 'utf-8'))
-
     time.sleep(1)
+    servo_position = 0
+    driver.write(bytes(f"1,{servo_position}\n", 'utf-8'))
+
+    time.sleep(5)
 
 
-arm.reset()
 
-# When everything done, release the capture
+# When everything done, release the capture and the arm
 cap.release()
 cv.destroyAllWindows()
+
+arm.exit()

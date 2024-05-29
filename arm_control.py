@@ -38,7 +38,7 @@ class controller():
         self.swift.set_position(x=30, y=-200, wait=True)
 
 
-    def move(self, x_target, y_target, z_target=50):
+    def move(self, x_target, y_target, z_target=50, speed=10000):
         self.swift.set_position(x=int(x_target), y=int(y_target), z=int(z_target), wait=True)
 
 
@@ -47,13 +47,11 @@ class controller():
     
 
     def reset(self):
-        self.swift.reset(wait=True, speed=10000)
-        self.swift.set_position(x=140, y=0, z=50, wait=True)
+        self.swift.set_position(z=200, wait=True)
+        self.swift.set_position(x=140, y=0, z=80, wait=True)
     
 
     def exit(self):
-        self.swift.reset(wait=True, speed=10000)
-        self.swift.set_position(x=140, y=0, z=50, wait=True) # Try removing to see if default reset coordinates are sufficient
-
-        print("Bye")
+        self.reset()
+        print("Closing connection to uArm")
         self.swift.disconnect()
