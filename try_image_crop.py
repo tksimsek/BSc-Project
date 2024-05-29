@@ -7,6 +7,7 @@ cap.set(cv.CAP_PROP_FOURCC, cv.VideoWriter_fourcc(*'MJPG'))
 
 if not cap.isOpened():
     print("Cannot open camera")
+    cap.release()
     exit()
 
 

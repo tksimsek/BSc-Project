@@ -88,7 +88,7 @@ void setup() {
         // will wait until serial comm opens
         delay(1);
     }
-    Serial.println("driver_on\n");
+    Serial.print("driver_on\n");
 
     // Endstop buttons
     pinMode(homeButton, INPUT_PULLUP);
@@ -100,7 +100,7 @@ void setup() {
     myservo.write(servo_position);
 
     calibrate(); // Homing of stepper motor
-    Serial.println("home\n");
+    Serial.print("home\n");
 }
 
 
@@ -122,27 +122,20 @@ void loop() {
         if (device == 1 && value >= 0) {
             // Move servo
             move_servo(value);
-            Serial.println("moved_s\n");
+            Serial.print("moved_s\n");
         }
-        else if (device == 2 && value >= 0 && value <= 32000) { //  && value < maxPosit
+        else if (device == 2 && value >= 0 && value <= 30000) { //  && value < maxPosit
             // Move stepper motor
-            stepper.setMaxSpeed(2000);
-            stepper.setAcceleration(300);
+            stepper.setMaxSpeed(800);
+            stepper.setAcceleration(150);
           
             stepper.moveTo(-value);
             stepper.runToPosition();
 
-            Serial.println("moved_c\n");
-
-            // while (currPosit != value && digitalRead(maxButton)) {
-            //     stepper.moveTo(currPosit);
-            //     currPosit++;
-            //     stepper.run();
-            //     delay(5);
+            // while (stepper.currentPosition() != value) {
+            //   stepper.run();
             // }
-
-            // stepper.stop();
-            // maxPosit = stepper.currentPosition();
+            Serial.print("moved_c\n");       
         }
     }
 }

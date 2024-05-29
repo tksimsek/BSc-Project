@@ -18,7 +18,7 @@ with open("settings.json", "r") as read_file:
     j_data = json.load(read_file)
 
     bounds_scooper = bound_arrays(j_data["Scooper"])
-    bounds_tennis = bound_arrays(j_data["TennisBall"])
+    bounds_tennis = bound_arrays(j_data["RedBall"])
 
 
 loop = True
@@ -29,6 +29,7 @@ while(loop):
         loop = False
         pass
     elif(command == "E"):
+        ret, frame = cap.read()
         ret, frame = cap.read()
         if not ret:
             print("Can't receive frame, dropping ...")

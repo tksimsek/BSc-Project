@@ -4,13 +4,13 @@
         "hueHigh": 55,
         "satLow": 36,
         "satHigh": 255,
-        "valLow": 150,
+        "valLow": 125,
         "valHigh": 255
     },
     "Scooper": {
         "hueLow": 0,
         "hueHigh": 33,
-        "satLow": 80,
+        "satLow": 95,
         "satHigh": 255,
         "valLow": 110,
         "valHigh": 255

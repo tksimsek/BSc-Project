@@ -15,7 +15,7 @@ with open("settings.json", "r") as read_file:
     j_data = json.load(read_file)
 
     lower_scooper, upper_scooper = bound_arrays(j_data["Scooper"])
-    lower_tennis, upper_tennis = bound_arrays(j_data["TennisBall"])
+    lower_tennis, upper_tennis = bound_arrays(j_data["RedBall"])
 
 
 image = cv.imread("Images/arm + ball.jpg")
