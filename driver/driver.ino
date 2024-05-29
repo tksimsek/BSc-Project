@@ -19,8 +19,8 @@ long currPosit = 1;
 long maxPosit = 60000;
 
 // Operating speed and acceleration
-int maxSpeed = 1400; // 1200 and 120 accel works
-int maxAccel = 120;
+int maxSpeed = 1800; // 1200 and 120 accel works
+int maxAccel = 200;
 
 // Servo
 Servo myservo;

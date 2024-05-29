@@ -64,7 +64,7 @@ else:
      loop = False
 
 
-for i in range(1):
+for i in range(2):
 
     servo_position = 0
     driver.write(bytes(f"1,{servo_position}\n", 'utf-8'))
@@ -94,11 +94,11 @@ for i in range(1):
     #     x_target = arm_x + y_diff
 
     x_target = 10
-    
     y_target = arm_y + x_diff + 30
     z_target = 40
 
     arm.move(x_target, y_target, z_target)
+    arm_servo = 10
     arm.set_servo(arm_servo)
 
     arm_x = x_target
@@ -136,10 +136,16 @@ for i in range(1):
         arm_z += 2
         arm.move(arm_x, arm_y, arm_z)
 
-        if(i % 6 == 0):
+        if(i % 5 == 0):
             arm_servo += 2
             arm.set_servo(arm_servo)
+        
+        if(arm_y < 250):
+            arm_y += 2
+        elif(arm_y > 250):
+            arm_y -= 2
     
+
     # Arm is at max X range but there is still a bit more to go
     for i in range(16):
         
@@ -203,7 +209,7 @@ for i in range(1):
     servo_position = 0
     driver.write(bytes(f"1,{servo_position}\n", 'utf-8'))
 
-    time.sleep(5)
+    time.sleep(20)
 
 
 
