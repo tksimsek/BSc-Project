@@ -133,7 +133,7 @@ void loop() {
             stepper.setMaxSpeed(800);
             stepper.setAcceleration(150);
 
-            stepper.moveTo(500);
+            stepper.moveTo(1000);
             stepper.runToPosition();
             calibrate();          
           }
